@@ -129,25 +129,25 @@ public class AuthRestAPIs {
     }
 
 
-    @PutMapping("/update-password/{id}")
-    public ResponseEntity<?>updatePassword(@Valid @RequestBody PasswordForm passForm, @PathVariable Long id) {
-        Optional<User> user = userService.findById(id);
-
-        if (user == null ){
-            return new ResponseEntity<>(new ResponseMessage("Not found user"),HttpStatus.NOT_FOUND);
-        }
-
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(passForm.getUsername(), passForm.getCurrentPassword()));
-
-            user.get().setPassword(passwordEncoder.encode(passForm.getNewPassword()));
-
-            userService.save(user.get());
-
-            return new ResponseEntity<>(new ResponseMessage("Change password successful"),HttpStatus.OK);
-        } catch (Exception e) {
-            throw new RuntimeException("Fail!");
-        }
-    }
+//    @PutMapping("/update-password/{id}")
+//    public ResponseEntity<?>updatePassword(@Valid @RequestBody PasswordForm passForm, @PathVariable Long id) {
+//        Optional<User> user = userService.findById(id);
+//
+//        if (user == null ){
+//            return new ResponseEntity<>(new ResponseMessage("Not found user"),HttpStatus.NOT_FOUND);
+//        }
+//
+//        try {
+//            Authentication authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(passForm.getUsername(), passForm.getCurrentPassword()));
+//
+//            user.get().setPassword(passwordEncoder.encode(passForm.getNewPassword()));
+//
+//            userService.save(user.get());
+//
+//            return new ResponseEntity<>(new ResponseMessage("Change password successful"),HttpStatus.OK);
+//        } catch (Exception e) {
+//            throw new RuntimeException("Fail!");
+//        }
+//    }
 }
