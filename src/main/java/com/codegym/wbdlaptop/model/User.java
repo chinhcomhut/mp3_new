@@ -57,7 +57,7 @@ public class User {
         this.email = email;
         this.password = password;
     }
-    public User(Long id, @NotBlank @Size(min = 3, max = 50) String name, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(min = 6, max = 100) String password, Set<Role> roles, String blobString, String avatar) {
+    public User() {
         this.id = id;
         this.name = name;
         this.username = username;
