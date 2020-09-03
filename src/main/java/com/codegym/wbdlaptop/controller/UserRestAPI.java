@@ -1,7 +1,6 @@
 package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.model.User;
-import com.codegym.wbdlaptop.service.IProductService;
 import com.codegym.wbdlaptop.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
