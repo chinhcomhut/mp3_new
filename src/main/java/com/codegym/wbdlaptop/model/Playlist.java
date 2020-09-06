@@ -21,8 +21,8 @@ public class Playlist {
     private String nameAlbum;
     @ManyToOne
     User user;
-//    @JsonIgnore
-    @JsonView
+    @JsonIgnore
+//    @JsonView
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "player_song",
     joinColumns = @JoinColumn(name = "playlist_id"),
