@@ -33,6 +33,7 @@ public class CategoryAPI {
         if(categoryService.existsByNameCategory(category.getNameCategory())){
             return new ResponseEntity<>(new ResponseMessage("nocategory"), HttpStatus.OK);
         }
+        categoryService.save(category);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
     @GetMapping("/category")
