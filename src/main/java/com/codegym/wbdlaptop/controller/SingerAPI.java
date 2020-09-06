@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -88,5 +89,13 @@ public class SingerAPI {
         }
         singerService.delete(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+    @GetMapping("/list-singer")
+    public ResponseEntity<?> getListSinger(){
+        List<Singer> singers = singerService.findAll();
+        if(singers.isEmpty()){
+            return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(singers, HttpStatus.OK);
     }
 }
