@@ -1,5 +1,7 @@
 package com.codegym.wbdlaptop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,6 +21,7 @@ public class Song {
     private int likeSong;
     private int listenSong;
     private String CreateBy;
+    @JsonIgnore
     @ManyToOne
     User user;
 
