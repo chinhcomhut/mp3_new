@@ -65,4 +65,9 @@ songRepository.deleteById(id);
     public List<Song> findAll() {
         return songRepository.findAll();
     }
+
+    @Override
+    public List<Song> findByNameSongContaining(String nameSong) {
+        return songRepository.findByNameSongContaining(nameSong);
+    }
 }
