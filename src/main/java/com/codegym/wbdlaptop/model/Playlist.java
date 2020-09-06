@@ -51,12 +51,12 @@ public class Playlist {
         return id;
     }
 
-    @JsonIgnore
+//    @JsonIgnore
     public List<Song> getSongList() {
         return songList;
     }
 
-    @JsonIgnore
+//    @JsonIgnore
     public void setSongList(List<Song> songList) {
         this.songList = songList;
     }
