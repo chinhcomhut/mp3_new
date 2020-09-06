@@ -4,6 +4,8 @@ import com.codegym.wbdlaptop.model.User;
 import com.codegym.wbdlaptop.repository.IUserRepository;
 import com.codegym.wbdlaptop.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -50,4 +52,10 @@ public class UserServiceImpl implements IUserService {
     public Iterable<User> findUsersByNameContaining(String user_name) {
         return repository.findUsersByNameContaining(user_name);
     }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
 }
