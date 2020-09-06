@@ -2,7 +2,9 @@ package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.Category;
+import com.codegym.wbdlaptop.model.Song;
 import com.codegym.wbdlaptop.service.Impl.CategoryServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,8 @@ import java.util.Optional;
 public class CategoryAPI {
     @Autowired
     private CategoryServiceImpl categoryService;
+    @Autowired
+    private SongServiceImpl songService;
     @PostMapping("/category")
     public ResponseEntity<?> createCategory(@Valid @RequestBody Category category){
         if(category.getNameCategory()==null||category.getNameCategory()==""){
@@ -86,5 +90,17 @@ public class CategoryAPI {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+    @GetMapping("/song-by-category/{id}")
+    public ResponseEntity<?> pageSongByCategory(@PathVariable Long id, @PageableDefault(sort = "nameSong",direction = Sort.Direction.ASC)Pageable pageable){
+        Optional<Category> category = categoryService.findById(id);
+        if(!category.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Page<Song> songPage = songService.findByNameCategoryContaining(category.get().getNameCategory(),pageable);
+        if(songPage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
 }

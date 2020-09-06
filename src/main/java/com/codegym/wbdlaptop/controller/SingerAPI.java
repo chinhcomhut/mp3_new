@@ -2,7 +2,9 @@ package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.Singer;
+import com.codegym.wbdlaptop.model.Song;
 import com.codegym.wbdlaptop.service.Impl.SingerServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,8 @@ import java.util.Optional;
 public class SingerAPI {
     @Autowired
     private SingerServiceImpl singerService;
+    @Autowired
+    private SongServiceImpl songService;
     @PostMapping("/singer")
     public ResponseEntity<?> createSinger(@Valid @RequestBody Singer singer){
         if(singer.getNameSinger()==null||singer.getNameSinger()==""){
@@ -97,5 +101,17 @@ public class SingerAPI {
             return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(singers, HttpStatus.OK);
+    }
+    @GetMapping("/song-by-singer/{id}")
+    public ResponseEntity<?> pageSongBySinger(@PathVariable Long id, @PageableDefault(sort = "nameSong", direction = Sort.Direction.ASC)Pageable pageable){
+        Optional<Singer> singer = singerService.findById(id);
+        if(!singer.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Page<Song> songPage = songService.findByNameSingerContaining(singer.get().getNameSinger(),pageable);
+        if(songPage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
 }
