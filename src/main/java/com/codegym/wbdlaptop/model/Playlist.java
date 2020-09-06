@@ -1,6 +1,7 @@
 package com.codegym.wbdlaptop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -21,13 +22,15 @@ public class Playlist {
     private String nameAlbum;
     @ManyToOne
     User user;
-    @JsonIgnore
+    //    @JsonIgnore
 //    @JsonView
+    @JsonIgnoreProperties
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "player_song",
-    joinColumns = @JoinColumn(name = "playlist_id"),
-    inverseJoinColumns = @JoinColumn(name = "song_id"))
+            joinColumns = @JoinColumn(name = "playlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "song_id"))
     private List<Song> songList;
+
     public Playlist() {
     }
 
@@ -47,10 +50,12 @@ public class Playlist {
     public Long getId() {
         return id;
     }
+
     @JsonIgnore
     public List<Song> getSongList() {
         return songList;
     }
+
     @JsonIgnore
     public void setSongList(List<Song> songList) {
         this.songList = songList;
