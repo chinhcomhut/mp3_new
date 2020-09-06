@@ -47,11 +47,11 @@ public class Playlist {
     public Long getId() {
         return id;
     }
-
+    @JsonIgnore
     public List<Song> getSongList() {
         return songList;
     }
-
+    @JsonIgnore
     public void setSongList(List<Song> songList) {
         this.songList = songList;
     }
