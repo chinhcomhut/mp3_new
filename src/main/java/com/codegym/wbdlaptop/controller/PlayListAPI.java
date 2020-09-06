@@ -97,7 +97,7 @@ public class PlayListAPI {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @PutMapping("/update-playlist")
-    public ResponseEntity<?> updatePlayList(@Valid @RequestBody Playlist playlist){
+    public ResponseEntity<?> updatePlayList(@RequestBody Playlist playlist){
         playListService.save(playlist);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
