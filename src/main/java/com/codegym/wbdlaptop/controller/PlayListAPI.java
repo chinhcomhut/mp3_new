@@ -86,19 +86,19 @@ public class PlayListAPI {
         }
         return new ResponseEntity<>(playlistPage, HttpStatus.OK);
     }
-    @PutMapping("/add-song-to-playlist")
-    public ResponseEntity<?> addSongToPlayList(@PathVariable Long id, @Valid @RequestBody Playlist playlist, List<Song> song){
+    @PutMapping("/add-song-to-playlist/{id}")
+    public ResponseEntity<?> addSongToPlayList(@PathVariable Long id, @Valid @RequestBody Playlist playlist){
         Optional<Playlist> playlist1 = playListService.findById(id);
         if(!playlist1.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        playlist1.get().setSongList(song);
+       playlist1.get().setSongList(playlist.getSongList());
         playListService.save(playlist1.get());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(playlist1,HttpStatus.CREATED);
     }
     @PutMapping("/update-playlist")
     public ResponseEntity<?> updatePlayList(@RequestBody Playlist playlist){
         playListService.save(playlist);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(playlist,HttpStatus.CREATED);
     }
 }

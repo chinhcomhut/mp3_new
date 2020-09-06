@@ -1,6 +1,7 @@
 package com.codegym.wbdlaptop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +21,8 @@ public class Playlist {
     private String nameAlbum;
     @ManyToOne
     User user;
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonView
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "player_song",
     joinColumns = @JoinColumn(name = "playlist_id"),
