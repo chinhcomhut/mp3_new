@@ -21,17 +21,17 @@ public class UserRestAPI {
     @Autowired
     private IUserService userService;
 
-
-    @GetMapping("/user")
-    public ResponseEntity<?> getListAllUser(){
-        List<User> users = (List<User>) userService.findAll();
-
-        if(users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(users,HttpStatus.OK);
-    }
+//
+//    @GetMapping("/user")
+//    public ResponseEntity<?> getListAllUser(){
+//        List<User> users = (List<User>) userService.findAll();
+//
+//        if(users.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//
+//        return new ResponseEntity<>(users,HttpStatus.OK);
+//    }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
