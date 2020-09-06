@@ -24,7 +24,7 @@ public class Playlist {
     User user;
     //    @JsonIgnore
 //    @JsonView
-    @JsonIgnoreProperties
+//    @JsonIgnoreProperties
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "player_song",
             joinColumns = @JoinColumn(name = "playlist_id"),
