@@ -27,7 +27,7 @@ public class Song {
 
     public Song() {
     }
-    @JsonIgnore
+//    @JsonIgnore
     public Song(Long id, String nameSong, String avatarSong, String lyrics, String mp3Url, String nameSinger, String nameCategory, String nameBand, int likeSong, int listenSong, String createBy, User user) {
         this.id = id;
         this.nameSong = nameSong;
