@@ -2,6 +2,7 @@ package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.Playlist;
+import com.codegym.wbdlaptop.model.Song;
 import com.codegym.wbdlaptop.model.User;
 import com.codegym.wbdlaptop.security.service.UserDetailsServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.PlayListServiceImpl;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins ="*")
@@ -83,5 +85,15 @@ public class PlayListAPI {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(playlistPage, HttpStatus.OK);
+    }
+    @PutMapping("/add-song-to-playlist")
+    public ResponseEntity<?> addSongToPlayList(@PathVariable Long id, @Valid @RequestBody Playlist playlist, List<Song> song){
+        Optional<Playlist> playlist1 = playListService.findById(id);
+        if(!playlist1.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        playlist1.get().setSongList(song);
+        playListService.save(playlist1.get());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
