@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,5 +44,10 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public Page<Album> findAll(Pageable pageable) {
         return albumRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Album> findAll() {
+        return albumRepository.findAll();
     }
 }

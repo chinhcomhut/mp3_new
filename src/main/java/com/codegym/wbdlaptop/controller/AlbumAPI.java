@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.print.DocFlavor;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -90,5 +91,13 @@ public class AlbumAPI {
         }
         Page<Playlist> playlistPage = playListService.findByNameAlbumContaining(album.get().getNameAlbum(),pageable);
         return new ResponseEntity<>(playlistPage, HttpStatus.OK);
+    }
+    @GetMapping("/list-album")
+    public ResponseEntity<?> getListAlbum(){
+        List<Album> albums = albumService.findAll();
+        if(albums.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 }
