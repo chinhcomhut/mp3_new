@@ -12,4 +12,5 @@ public interface IPlayListService {
     Playlist save(Playlist playlist);
     Optional<Playlist> findById(Long id);
     Page<Playlist> findAll(Pageable pageable);
+    Page<Playlist> findByNameAlbumContaining(String nameAlbum, Pageable pageable);
 }

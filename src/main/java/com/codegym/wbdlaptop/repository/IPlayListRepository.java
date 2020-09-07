@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPlayListRepository extends JpaRepository<Playlist, Long> {
     Page<Playlist> findAllByUserId(Long userId, Pageable pageable);
+    Page<Playlist> findByNameAlbumContaining(String nameAlbum, Pageable pageable);
 }
