@@ -6,6 +6,7 @@ import com.codegym.wbdlaptop.model.Song;
 import com.codegym.wbdlaptop.model.User;
 import com.codegym.wbdlaptop.security.service.UserDetailsServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.PlayListServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,8 @@ public class PlayListAPI {
     private PlayListServiceImpl playListService;
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private UserServiceImpl userService;
     @PostMapping("/playlist")
     public ResponseEntity<?> createPlayList(@Valid @RequestBody Playlist playlist){
         if(playlist.getNamePlayList()==null||playlist.getNamePlayList()==""){
@@ -77,10 +80,11 @@ public class PlayListAPI {
         playListService.delete(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
-    @GetMapping("/playlist-by-user")
-    public ResponseEntity<?> pagePlayListByUser(@PageableDefault(sort = "namePlayList", direction = Sort.Direction.ASC)Pageable pageable){
-        User user = userDetailsService.getCurrentUser();
-        Page<Playlist> playlistPage = playListService.findAllByUserId(user.getId(),pageable);
+    @GetMapping("/playlist-by-user/{id}")
+    public ResponseEntity<?> pagePlayListByUser(@PathVariable Long id,@PageableDefault(sort = "namePlayList", direction = Sort.Direction.ASC)Pageable pageable){
+//        User user = userDetailsService.getCurrentUser();
+        Optional<User> user = userService.findById(id);
+        Page<Playlist> playlistPage = playListService.findAllByUserId(user.get().getId(),pageable);
         if(playlistPage.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
