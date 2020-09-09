@@ -25,7 +25,7 @@ public class Playlist {
 //    @JsonView
 //    @JsonIgnoreProperties
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "player_song",
             joinColumns = @JoinColumn(name = "playlist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id"))
