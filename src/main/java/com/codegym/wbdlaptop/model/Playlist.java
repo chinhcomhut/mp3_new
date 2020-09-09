@@ -22,7 +22,7 @@ public class Playlist {
     private String nameAlbum;
     @ManyToOne
     User user;
-        @JsonIgnore
+//        @JsonIgnore
 //    @JsonView
 //    @JsonIgnoreProperties
     @ManyToMany(fetch = FetchType.LAZY)

@@ -82,9 +82,9 @@ public class PlayListAPI {
     }
     @GetMapping("/playlist-by-user/{id}")
     public ResponseEntity<?> pagePlayListByUser(@PathVariable Long id,@PageableDefault(sort = "namePlayList", direction = Sort.Direction.ASC)Pageable pageable){
-//        User user = userDetailsService.getCurrentUser();
-        Optional<User> user = userService.findById(id);
-        Page<Playlist> playlistPage = playListService.findAllByUserId(user.get().getId(),pageable);
+        User user = userDetailsService.getCurrentUser();
+//        Optional<User> user = userService.findById(id);
+        Page<Playlist> playlistPage = playListService.findAllByUserId(user.getId(),pageable);
         if(playlistPage.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
