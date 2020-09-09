@@ -1,14 +1,13 @@
 package com.codegym.wbdlaptop.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "playlist")
+@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@UUID")
 public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +21,10 @@ public class Playlist {
     private String nameAlbum;
     @ManyToOne
     User user;
-//        @JsonIgnore
+    //        @JsonIgnore
 //    @JsonView
 //    @JsonIgnoreProperties
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "player_song",
             joinColumns = @JoinColumn(name = "playlist_id"),
@@ -51,12 +51,12 @@ public class Playlist {
         return id;
     }
 
-//    @JsonIgnore
+    //    @JsonIgnore
     public List<Song> getSongList() {
         return songList;
     }
 
-//    @JsonIgnore
+    //    @JsonIgnore
     public void setSongList(List<Song> songList) {
         this.songList = songList;
     }
