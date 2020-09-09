@@ -81,8 +81,8 @@ public class PlayListAPI {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
     @GetMapping("/playlist-by-user")
-    public ResponseEntity<?> pagePlayListByUser(@PageableDefault(sort = "namePlayList", direction = Sort.Direction.ASC)Pageable pageable){
-        User user = userDetailsService.getCurrentUser();
+    public ResponseEntity<?> pagePlayListByUser(@PageableDefault(sort = "namePlayList", direction = Sort.Direction.ASC)User user,Pageable pageable){
+        user = userDetailsService.getCurrentUser();
 //        Optional<User> user = userService.findById(id);
         Page<Playlist> playlistPage = playListService.findAllByUserId(user.getId(),pageable);
         if(playlistPage.isEmpty()){
