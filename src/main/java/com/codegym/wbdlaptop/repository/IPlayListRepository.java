@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface IPlayListRepository extends JpaRepository<Playlist, Long> {
     Page<Playlist> findAllByUserId(Long userId, Pageable pageable);
     Page<Playlist> findByNameAlbumContaining(String nameAlbum, Pageable pageable);
+    Page<Playlist> findByNameSingerContaining(String nameSinger, Pageable pageable);
+    Page<Playlist> findByNameCategoryContaining(String nameCategory, Pageable pageable);
+    Page<Playlist> findByNameBandContaining(String nameBand, Pageable pageable);
 }

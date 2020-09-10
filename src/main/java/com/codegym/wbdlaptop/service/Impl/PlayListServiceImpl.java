@@ -50,4 +50,19 @@ public class PlayListServiceImpl implements IPlayListService {
     public Page<Playlist> findByNameAlbumContaining(String nameAlbum, Pageable pageable) {
         return playListRepository.findByNameAlbumContaining(nameAlbum,pageable);
     }
+
+    @Override
+    public Page<Playlist> findByNameSingerContaining(String nameSinger, Pageable pageable) {
+        return playListRepository.findByNameSingerContaining(nameSinger,pageable);
+    }
+
+    @Override
+    public Page<Playlist> findByNameCategoryContaining(String nameCategory, Pageable pageable) {
+        return playListRepository.findByNameCategoryContaining(nameCategory,pageable);
+    }
+
+    @Override
+    public Page<Playlist> findByNameBandContaining(String nameBand, Pageable pageable) {
+        return playListRepository.findByNameBandContaining(nameBand,pageable);
+    }
 }
