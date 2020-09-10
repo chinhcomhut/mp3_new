@@ -21,13 +21,13 @@ public class Singer {
     @ManyToOne
     User user;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "singer_player",
     joinColumns = @JoinColumn(name = "singer_id"),
     inverseJoinColumns = @JoinColumn(name = "playlist_id"))
     private List<Playlist> playlists;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "singer_song",
     joinColumns = @JoinColumn(name = "singer_id"),
     inverseJoinColumns = @JoinColumn(name = "song_id"))
