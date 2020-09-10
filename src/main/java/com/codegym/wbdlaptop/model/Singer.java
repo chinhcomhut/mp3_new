@@ -27,7 +27,7 @@ public class Singer {
     inverseJoinColumns = @JoinColumn(name = "playlist_id"))
     private List<Playlist> playlists;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "singer_song",
     joinColumns = @JoinColumn(name = "singer_id"),
     inverseJoinColumns = @JoinColumn(name = "song_id"))

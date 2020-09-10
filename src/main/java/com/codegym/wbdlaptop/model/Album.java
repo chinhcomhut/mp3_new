@@ -17,7 +17,7 @@ public class Album {
     @ManyToOne
     User user;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "album_player",
     joinColumns = @JoinColumn(name = "album_id"),
     inverseJoinColumns = @JoinColumn(name = "playlist_id"))
