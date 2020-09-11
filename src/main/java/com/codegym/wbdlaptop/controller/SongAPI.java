@@ -3,8 +3,10 @@ package com.codegym.wbdlaptop.controller;
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.Singer;
 import com.codegym.wbdlaptop.model.Song;
+import com.codegym.wbdlaptop.model.User;
 import com.codegym.wbdlaptop.service.Impl.PlayListServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +30,8 @@ public class SongAPI {
     private SongServiceImpl songService;
     @Autowired
     private PlayListServiceImpl playListService;
+    @Autowired
+    private UserServiceImpl userService;
     @GetMapping("/song")
     public ResponseEntity<?> pageSong(@PageableDefault(sort = "nameSong", direction = Sort.Direction.ASC) Pageable pageable){
         Page<Song> songPage = songService.findAll(pageable);
@@ -126,6 +131,18 @@ public class SongAPI {
     public ResponseEntity<?> updateSong(@RequestBody Song song){
         songService.save(song);
         return new ResponseEntity<>(song, HttpStatus.CREATED);
+    }
+    @GetMapping("/song-by-user/{id}")
+    public ResponseEntity<?> pageSongByUserId(@PathVariable Long id, @PageableDefault(sort = "nameSong", direction = Sort.Direction.ASC)Pageable pageable){
+        Optional<User> user = userService.findById(id);
+        if(user.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Page<Song> songPage = songService.findAllByUserId(user.get().getId(),pageable);
+        if(songPage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
 
 }

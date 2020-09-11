@@ -4,9 +4,11 @@ import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.Category;
 import com.codegym.wbdlaptop.model.Playlist;
 import com.codegym.wbdlaptop.model.Song;
+import com.codegym.wbdlaptop.model.User;
 import com.codegym.wbdlaptop.service.Impl.CategoryServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.PlayListServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,8 @@ public class CategoryAPI {
     private SongServiceImpl songService;
     @Autowired
     private PlayListServiceImpl playListService;
+    @Autowired
+    private UserServiceImpl userService;
     @PostMapping("/category")
     public ResponseEntity<?> createCategory(@Valid @RequestBody Category category){
         if(category.getNameCategory()==null||category.getNameCategory()==""){
@@ -118,5 +122,17 @@ public class CategoryAPI {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(playlistPage, HttpStatus.OK);
+    }
+    @GetMapping("/category-by-user/{id}")
+    public ResponseEntity<?> pageCategoryByUserId(@PathVariable Long id, @PageableDefault(sort = "nameCategory", direction = Sort.Direction.ASC)Pageable pageable){
+        Optional<User> user = userService.findById(id);
+        if(!user.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Page<Category> categories = categoryService.findAllByUserId(user.get().getId(),pageable);
+        if(categories.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(categories,HttpStatus.OK);
     }
 }
