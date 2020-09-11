@@ -135,10 +135,10 @@ public class SongAPI {
     @GetMapping("/song-by-user/{id}")
     public ResponseEntity<?> pageSongByUserId(@PathVariable Long id, @PageableDefault(sort = "nameSong", direction = Sort.Direction.ASC)Pageable pageable){
         Optional<User> user = userService.findById(id);
-        if(user.isPresent()){
+        Page<Song> songPage = songService.findAllByUserId(user.get().getId(),pageable);
+        if(!user.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Page<Song> songPage = songService.findAllByUserId(user.get().getId(),pageable);
         if(songPage.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
