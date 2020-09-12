@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.print.DocFlavor;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -125,5 +126,13 @@ public class BandAPI {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(playlistPage, HttpStatus.OK);
+    }
+    @GetMapping("list-band")
+    public ResponseEntity<?> listBand(){
+        List<Band> bands = bandService.findAll();
+        if(bands.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(bands, HttpStatus.OK);
     }
 }
