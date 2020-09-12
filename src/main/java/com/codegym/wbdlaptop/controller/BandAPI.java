@@ -79,7 +79,7 @@ public class BandAPI {
         band1.get().setNameBand(band.getNameBand());
         band1.get().setAvatarBand(band.getAvatarBand());
         bandService.save(band1.get());
-        return new ResponseEntity<>(band1, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("yes"),HttpStatus.OK);
     }
     @DeleteMapping("/band/{id}")
     public ResponseEntity<?> deleteBand(@PathVariable Long id){
