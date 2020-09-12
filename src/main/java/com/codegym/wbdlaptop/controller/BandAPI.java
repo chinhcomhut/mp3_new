@@ -46,7 +46,7 @@ public class BandAPI {
             return new ResponseEntity<>(new ResponseMessage("noband"), HttpStatus.OK);
         }
         bandService.save(band);
-        return new ResponseEntity<>(band, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
     @GetMapping("/band")
     public ResponseEntity<?> pageBand(@PageableDefault(sort = "nameBand",direction = Sort.Direction.ASC)Pageable pageable){
