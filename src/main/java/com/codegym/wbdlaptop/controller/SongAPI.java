@@ -85,7 +85,7 @@ public class SongAPI {
             return new ResponseEntity<>(new ResponseMessage("nocategory"), HttpStatus.OK);
         }
 
-        if (song.getNameSinger() == "" && song.getNameBand()=="") {
+        if ((song.getNameSinger() == ""||song.getNameSinger()==null) && (song.getNameBand()==""||song.getNameBand()==null)) {
             return new ResponseEntity<>(new ResponseMessage("nosingerband"), HttpStatus.OK);
         }
 
