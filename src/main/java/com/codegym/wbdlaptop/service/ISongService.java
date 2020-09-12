@@ -18,4 +18,5 @@ public interface ISongService {
     Page<Song> findAll(Pageable pageable);
     List<Song> findAll();
     List<Song> findByNameSongContaining(String nameSong);
+    Page<Song> findByNameBandContaining(String nameBand, Pageable pageable);
 }

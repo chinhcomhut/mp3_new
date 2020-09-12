@@ -70,4 +70,9 @@ songRepository.deleteById(id);
     public List<Song> findByNameSongContaining(String nameSong) {
         return songRepository.findByNameSongContaining(nameSong);
     }
+
+    @Override
+    public Page<Song> findByNameBandContaining(String nameBand, Pageable pageable) {
+        return songRepository.findByNameBandContaining(nameBand, pageable);
+    }
 }

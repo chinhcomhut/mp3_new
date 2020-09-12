@@ -15,4 +15,5 @@ Page<Song> findAllByUserId(Long userId, Pageable pageable);
 Page<Song> findByNameSingerContaining(String nameSinger, Pageable pageable);
 Page<Song> findByNameCategoryContaining(String nameCategory, Pageable pageable);
 List<Song> findByNameSongContaining(String nameSong);
+Page<Song> findByNameBandContaining(String nameBand, Pageable pageable);
 }
