@@ -116,12 +116,28 @@ public class SongAPI {
         songService.delete(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
-    @GetMapping("/song-like/{id}")
+    @GetMapping("/song-like-up/{id}")
     public ResponseEntity<?> getSongLikedById(@PathVariable("id") Long id) {
         try {
             Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
             song.setLikeSong(song.getLikeSong()+ 1);
             songService.save(song);
+            return new ResponseEntity<>(song, HttpStatus.OK);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/song-like-down/{id}")
+    public ResponseEntity<?> getSongLikedDownById(@PathVariable("id") Long id) {
+        try {
+            Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
+            if(song.getLikeSong()==0){
+                song.setLikeSong(0);
+            }else{
+                song.setLikeSong(song.getLikeSong()-1);
+                songService.save(song);
+            }
+
             return new ResponseEntity<>(song, HttpStatus.OK);
         } catch (EntityNotFoundException e){
             return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
