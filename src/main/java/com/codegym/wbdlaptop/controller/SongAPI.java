@@ -14,9 +14,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -113,6 +115,17 @@ public class SongAPI {
         }
         songService.delete(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+    @GetMapping("/song-like/{id}")
+    public ResponseEntity<?> getSongLikedById(@PathVariable("id") Long id) {
+        try {
+            Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
+            song.setLikeSong(song.getLikeSong()+ 1);
+            songService.save(song);
+            return new ResponseEntity<>(song, HttpStatus.OK);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
+        }
     }
     //    @GetMapping("/song-by-playlist/{id}")
 //       public ResponseEntity songByPlayListId(@PathVariable Long id){
