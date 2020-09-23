@@ -137,7 +137,7 @@ public class SongAPI {
                 likeSongService.save(likeSong);
                 song.setLikeSong(song.getLikeSong()+ 1);
                 songService.save(song);
-//                return new ResponseEntity<>(song, HttpStatus.OK);
+                return new ResponseEntity<>(song, HttpStatus.OK);
             } else {
                 for(int i = 0; i<likeSongs.size();i++){
                     if(likeSongs.get(i).getNameSong().equals(song.getNameSong())){
