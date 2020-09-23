@@ -1,9 +1,12 @@
 package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
+import com.codegym.wbdlaptop.model.LikeSong;
 import com.codegym.wbdlaptop.model.Singer;
 import com.codegym.wbdlaptop.model.Song;
 import com.codegym.wbdlaptop.model.User;
+import com.codegym.wbdlaptop.security.service.UserDetailsServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.LikeSongServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.PlayListServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.UserServiceImpl;
@@ -34,6 +37,10 @@ public class SongAPI {
     private PlayListServiceImpl playListService;
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private LikeSongServiceImpl likeSongService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
     @GetMapping("/song")
     public ResponseEntity<?> pageSong(@PageableDefault(sort = "nameSong", direction = Sort.Direction.ASC) Pageable pageable){
         Page<Song> songPage = songService.findAll(pageable);
@@ -117,9 +124,33 @@ public class SongAPI {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
     @GetMapping("/song-like-up/{id}")
-    public ResponseEntity<?> getSongLikedById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getSongLikedById(@PathVariable Long id) {
         try {
+
             Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
+            User user = userDetailsService.getCurrentUser();
+            List<LikeSong> likeSongs = likeSongService.findByUsernameContaining(user.getUsername());
+            if(likeSongs.size()==0){
+                LikeSong likeSong = new LikeSong();
+                likeSong.setNameSong(song.getNameSong());
+                likeSong.setUsername(user.getUsername());
+                likeSongService.save(likeSong);
+                song.setLikeSong(song.getLikeSong()+ 1);
+                songService.save(song);
+            } else {
+                for(int i = 0; i<likeSongs.size();i++){
+                    if(likeSongs.get(i).getNameSong().equals(song.getNameSong())){
+                        likeSongService.delete(likeSongs.get(i).getId());
+                        song.setLikeSong(song.getLikeSong()-1);
+                        songService.save(song);
+                        return new ResponseEntity<>(song, HttpStatus.OK);
+                    }
+                }
+            }
+            LikeSong likeSong = new LikeSong();
+            likeSong.setNameSong(song.getNameSong());
+            likeSong.setUsername(user.getUsername());
+            likeSongService.save(likeSong);
             song.setLikeSong(song.getLikeSong()+ 1);
             songService.save(song);
             return new ResponseEntity<>(song, HttpStatus.OK);
@@ -130,10 +161,17 @@ public class SongAPI {
     @GetMapping("/song-like-down/{id}")
     public ResponseEntity<?> getSongLikedDownById(@PathVariable("id") Long id) {
         try {
+            User user = userDetailsService.getCurrentUser();
             Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
             if(song.getLikeSong()==0){
                 song.setLikeSong(0);
             }else{
+                List<LikeSong> likeSongs = likeSongService.findByUsernameContaining(user.getUsername());
+                for(int i =0; i<likeSongs.size();i++){
+                    if(likeSongs.get(i).getNameSong().equals(song.getNameSong())){
+                        likeSongService.delete(likeSongs.get(i).getId());
+                    }
+                }
                 song.setLikeSong(song.getLikeSong()-1);
                 songService.save(song);
             }
