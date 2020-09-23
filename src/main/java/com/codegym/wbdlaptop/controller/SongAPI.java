@@ -158,29 +158,29 @@ public class SongAPI {
             return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("/song-like-down/{id}")
-    public ResponseEntity<?> getSongLikedDownById(@PathVariable("id") Long id) {
-        try {
-            User user = userDetailsService.getCurrentUser();
-            Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
-            if(song.getLikeSong()==0){
-                song.setLikeSong(0);
-            }else{
-                List<LikeSong> likeSongs = likeSongService.findByUsernameContaining(user.getUsername());
-                for(int i =0; i<likeSongs.size();i++){
-                    if(likeSongs.get(i).getNameSong().equals(song.getNameSong())){
-                        likeSongService.delete(likeSongs.get(i).getId());
-                    }
-                }
-                song.setLikeSong(song.getLikeSong()-1);
-                songService.save(song);
-            }
-
-            return new ResponseEntity<>(song, HttpStatus.OK);
-        } catch (EntityNotFoundException e){
-            return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
-        }
-    }
+//    @GetMapping("/song-like-down/{id}")
+//    public ResponseEntity<?> getSongLikedDownById(@PathVariable("id") Long id) {
+//        try {
+//            User user = userDetailsService.getCurrentUser();
+//            Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
+//            if(song.getLikeSong()==0){
+//                song.setLikeSong(0);
+//            }else{
+//                List<LikeSong> likeSongs = likeSongService.findByUsernameContaining(user.getUsername());
+//                for(int i =0; i<likeSongs.size();i++){
+//                    if(likeSongs.get(i).getNameSong().equals(song.getNameSong())){
+//                        likeSongService.delete(likeSongs.get(i).getId());
+//                    }
+//                }
+//                song.setLikeSong(song.getLikeSong()-1);
+//                songService.save(song);
+//            }
+//
+//            return new ResponseEntity<>(song, HttpStatus.OK);
+//        } catch (EntityNotFoundException e){
+//            return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
+//        }
+//    }
     //    @GetMapping("/song-by-playlist/{id}")
 //       public ResponseEntity songByPlayListId(@PathVariable Long id){
 //        Optional<Playlist> playlist = playListService.findById(id);
