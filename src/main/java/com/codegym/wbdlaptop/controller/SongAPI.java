@@ -212,5 +212,18 @@ public class SongAPI {
         }
         return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
+//    @GetMapping("/page-top-like-song")
+//    public ResponseEntity<?> pageTopLikeSong(@PageableDefault(sort = "likeSong", direction = Sort.Direction.ASC)Pageable pageable, Song song){
+//        Page<Song> songPage = songService.findAllByNameSongOrderByLikeSongAsc(song.getLikeSong(),pageable);
+//
+//    }
+@GetMapping("/page-top-like-song")
+public ResponseEntity<?> pageTopLikeSong(@PageableDefault(sort = "likeSong", direction = Sort.Direction.ASC) Pageable pageable){
+    Page<Song> songPage = songService.findAll(pageable);
+    if(songPage.isEmpty()){
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    return new ResponseEntity<>(songPage, HttpStatus.OK);
+}
 
 }

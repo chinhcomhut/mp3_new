@@ -75,4 +75,9 @@ songRepository.deleteById(id);
     public Page<Song> findByNameBandContaining(String nameBand, Pageable pageable) {
         return songRepository.findByNameBandContaining(nameBand, pageable);
     }
+
+//    @Override
+//    public Page<Song> findAllByNameSongOrderByLikeSongAsc(int likeSong, Pageable pageable) {
+//        return songRepository.findAllByNameSongOrderByLikeSongAsc(likeSong,pageable);
+//    }
 }

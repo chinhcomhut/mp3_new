@@ -19,4 +19,5 @@ public interface ISongService {
     List<Song> findAll();
     List<Song> findByNameSongContaining(String nameSong);
     Page<Song> findByNameBandContaining(String nameBand, Pageable pageable);
+//    Page<Song> findAllByNameSongOrderByLikeSongAsc(int likeSong, Pageable pageable);
 }
