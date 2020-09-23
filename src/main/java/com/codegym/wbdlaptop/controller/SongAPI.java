@@ -218,7 +218,7 @@ public class SongAPI {
 //
 //    }
 @GetMapping("/page-top-like-song")
-public ResponseEntity<?> pageTopLikeSong(@PageableDefault(sort = "likeSong", direction = Sort.Direction.ASC) Pageable pageable){
+public ResponseEntity<?> pageTopLikeSong(@PageableDefault(sort = "likeSong", direction = Sort.Direction.DESC) Pageable pageable){
     Page<Song> songPage = songService.findAll(pageable);
     if(songPage.isEmpty()){
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
