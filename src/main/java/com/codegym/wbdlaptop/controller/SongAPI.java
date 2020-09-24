@@ -159,6 +159,17 @@ public class SongAPI {
             return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/count-listen-song")
+    public ResponseEntity<?> getSongListenById(@PathVariable Long id){
+        try {
+            Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
+            song.setListenSong(song.getListenSong()+1);
+            songService.save(song);
+            return new ResponseEntity<>(song,HttpStatus.OK);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
 //    @GetMapping("/song-like-down/{id}")
 //    public ResponseEntity<?> getSongLikedDownById(@PathVariable("id") Long id) {
 //        try {
