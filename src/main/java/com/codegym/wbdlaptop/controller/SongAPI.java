@@ -159,7 +159,7 @@ public class SongAPI {
             return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("/count-listen-song")
+    @GetMapping("/count-listen-song/{id}")
     public ResponseEntity<?> getSongListenById(@PathVariable Long id){
         try {
             Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
