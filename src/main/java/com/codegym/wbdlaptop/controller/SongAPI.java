@@ -236,6 +236,14 @@ public ResponseEntity<?> pageTopLikeSong(@PageableDefault(sort = "likeSong", dir
     }
     return new ResponseEntity<>(songPage, HttpStatus.OK);
 }
+@GetMapping("/list-song")
+public ResponseEntity<?> listSong(){
+        List<Song> songs = songService.findAll();
+        if(songs.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songs,HttpStatus.OK);
+}
 @GetMapping("/page-top-listen-song")
     public ResponseEntity<?> pageTopListenSong(@PageableDefault(sort = "listenSong",direction = Sort.Direction.DESC)Pageable pageable){
         Page<Song> songPage = songService.findAll(pageable);

@@ -19,6 +19,7 @@ public class SongServiceImpl implements ISongService {
     private ISongRepository songRepository;
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
     @Override
     public Boolean existsByNameSong(String nameSong) {
         return songRepository.existsByNameSong(nameSong);
@@ -26,17 +27,17 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public Page<Song> findAllByUserId(Long userId, Pageable pageable) {
-        return songRepository.findAllByUserId(userId,pageable);
+        return songRepository.findAllByUserId(userId, pageable);
     }
 
     @Override
     public Page<Song> findByNameSingerContaining(String nameSinger, Pageable pageable) {
-        return songRepository.findByNameSingerContaining(nameSinger,pageable);
+        return songRepository.findByNameSingerContaining(nameSinger, pageable);
     }
 
     @Override
     public Page<Song> findByNameCategoryContaining(String nameCategory, Pageable pageable) {
-        return songRepository.findByNameCategoryContaining(nameCategory,pageable);
+        return songRepository.findByNameCategoryContaining(nameCategory, pageable);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public void delete(Long id) {
-songRepository.deleteById(id);
+        songRepository.deleteById(id);
     }
 
     @Override
