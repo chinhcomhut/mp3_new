@@ -146,4 +146,5 @@ public class SingerAPI {
         }
         return new ResponseEntity<>(singers,HttpStatus.OK);
     }
+  
 }
