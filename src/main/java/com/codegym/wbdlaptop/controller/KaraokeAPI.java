@@ -30,11 +30,25 @@ public class KaraokeAPI {
         }
         return new ResponseEntity<>(karaokes,HttpStatus.OK);
     }
+    @GetMapping("/karaoke/{id}")
+    public ResponseEntity<?> getKaraokeById(@PathVariable Long id){
+        Optional<Karaoke> karaoke = karaokeRepository.findById(id);
+        if(!karaoke.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(karaoke, HttpStatus.OK);
+    }
     @PutMapping("/karaoke/{id}")
     public ResponseEntity<?> updateKaraoke(@PathVariable Long id, @Valid @RequestBody Karaoke karaoke){
         Optional<Karaoke> karaoke1 = karaokeRepository.findById(id);
         if(!karaoke1.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(karaoke.getNameSong()==""||karaoke.getNameSong()==null){
+            return new ResponseEntity<>(new ResponseMessage("noname"), HttpStatus.OK);
+        }
+        if(karaoke.getLinkYoutube()==null||karaoke.getLinkYoutube()==""){
+            return new ResponseEntity<>(new ResponseMessage("nolink"), HttpStatus.OK);
         }
         karaoke1.get().setNameSong(karaoke.getNameSong());
         karaoke1.get().setLinkYoutube(karaoke.getLinkYoutube());
