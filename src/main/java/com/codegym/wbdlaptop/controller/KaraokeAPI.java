@@ -53,7 +53,7 @@ public class KaraokeAPI {
         karaoke1.get().setNameSong(karaoke.getNameSong());
         karaoke1.get().setLinkYoutube(karaoke.getLinkYoutube());
         karaokeRepository.save(karaoke1.get());
-        return new ResponseEntity<>(karaoke1,HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("yes"),HttpStatus.OK);
     }
     @DeleteMapping("/karaoke/{id}")
     public ResponseEntity<?> deleteKaraoke(@PathVariable Long id){
