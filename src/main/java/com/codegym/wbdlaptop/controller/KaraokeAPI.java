@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -59,5 +60,13 @@ public class KaraokeAPI {
         }
         karaokeRepository.save(karaoke);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+    @GetMapping("/list-karaoke")
+    public ResponseEntity<?> listKaraoke(){
+        List<Karaoke> karaokes = karaokeRepository.findAll();
+        if(karaokes.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(karaokes,HttpStatus.OK);
     }
 }

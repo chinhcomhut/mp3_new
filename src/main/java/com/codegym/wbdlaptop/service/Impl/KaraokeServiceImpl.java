@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,5 +39,10 @@ public class KaraokeServiceImpl implements IKaraokeService {
     @Override
     public Page<Karaoke> findAll(Pageable pageable) {
         return karaokeRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Karaoke> findAll() {
+        return karaokeRepository.findAll();
     }
 }
