@@ -32,11 +32,16 @@ public class Singer {
     joinColumns = @JoinColumn(name = "singer_id"),
     inverseJoinColumns = @JoinColumn(name = "song_id"))
     private List<Song> songList;
-
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "singer_video",
+            joinColumns = @JoinColumn(name = "singer_id"),
+            inverseJoinColumns = @JoinColumn(name = "video_id"))
+    private List<Video> videoList;
     public Singer() {
     }
 
-    public Singer(Long id, String nameSinger, String avatarSinger, String createBy, String information, String birthday, String gender, User user, List<Playlist> playlists, List<Song> songList) {
+    public Singer(Long id, String nameSinger, String avatarSinger, String createBy, String information, String birthday, String gender, User user, List<Playlist> playlists, List<Song> songList, List<Video> videoList) {
         this.id = id;
         this.nameSinger = nameSinger;
         this.avatarSinger = avatarSinger;
@@ -47,6 +52,7 @@ public class Singer {
         this.user = user;
         this.playlists = playlists;
         this.songList = songList;
+        this.videoList = videoList;
     }
 
     public Long getId() {
@@ -55,6 +61,14 @@ public class Singer {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setVideoList(List<Video> videoList) {
+        this.videoList = videoList;
+    }
+
+    public List<Video> getVideoList() {
+        return videoList;
     }
 
     public String getNameSinger() {

@@ -29,11 +29,16 @@ public class Category {
     joinColumns = @JoinColumn(name = "category_id"),
     inverseJoinColumns = @JoinColumn(name = "song_id"))
     private List<Song> songList;
-
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "category_video",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "video_id"))
+    private List<Video> videoList;
     public Category() {
     }
 
-    public Category(Long id, String nameCategory, String avatarCategory, String createBy, User user, List<Playlist> playlists, List<Song> songList) {
+    public Category(Long id, String nameCategory, String avatarCategory, String createBy, User user, List<Playlist> playlists, List<Song> songList, List<Video> videoList) {
         this.id = id;
         this.nameCategory = nameCategory;
         this.avatarCategory = avatarCategory;
@@ -41,10 +46,19 @@ public class Category {
         this.user = user;
         this.playlists = playlists;
         this.songList = songList;
+        this.videoList = videoList;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public List<Video> getVideoList() {
+        return videoList;
+    }
+
+    public void setVideoList(List<Video> videoList) {
+        this.videoList = videoList;
     }
 
     public void setId(Long id) {
