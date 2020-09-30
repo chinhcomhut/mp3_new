@@ -94,6 +94,7 @@ public class VideoAPI {
         if(!video.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(video,HttpStatus.OK);
+        videoService.delete(id);
+        return new ResponseEntity<>(new ResponseMessage("yes"),HttpStatus.OK);
     }
 }
