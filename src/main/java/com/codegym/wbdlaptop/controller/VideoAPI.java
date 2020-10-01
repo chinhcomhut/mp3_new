@@ -4,6 +4,7 @@ import com.codegym.wbdlaptop.message.response.ResponseMessage;
 import com.codegym.wbdlaptop.model.*;
 import com.codegym.wbdlaptop.security.service.UserDetailsServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.LikeSongServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.LikeVideoServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.VideoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,7 @@ public class VideoAPI {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
     @Autowired
-    private LikeSongServiceImpl likeSongService;
+    private LikeVideoServiceImpl likeVideoService;
     @GetMapping("/video")
     public ResponseEntity<?> pageVideo(@PageableDefault(sort = "nameVideo",direction = Sort.Direction.ASC)Pageable pageable){
         Page<Video> videos = videoService.findAll(pageable);
@@ -108,29 +109,29 @@ public class VideoAPI {
 
             Video video = videoService.findById(id).orElseThrow(EntityNotFoundException::new);
             User user = userDetailsService.getCurrentUser();
-            List<LikeSong> likeSongs = likeSongService.findByUsernameContaining(user.getUsername());
-            if(likeSongs.size()==0){
-                LikeSong likeSong = new LikeSong();
-                likeSong.setNameVideo(video.getNameVideo());
-                likeSong.setUsername(user.getUsername());
-                likeSongService.save(likeSong);
+            List<LikeVideo> likeVideos = likeVideoService.findByUsernameContaining(user.getUsername());
+            if(likeVideos.size()==0){
+                LikeVideo likeVideo = new LikeVideo();
+                likeVideo.setNameVideo(video.getNameVideo());
+                likeVideo.setUsername(user.getUsername());
+                likeVideoService.save(likeVideo);
                 video.setLikeVideo(video.getLikeVideo()+ 1);
                 videoService.save(video);
                 return new ResponseEntity<>(video, HttpStatus.OK);
             } else {
-                for(int i = 0; i<likeSongs.size();i++){
-                    if(likeSongs.get(i).getNameVideo().equals(video.getNameVideo())){
-                        likeSongService.delete(likeSongs.get(i).getId());
+                for(int i = 0; i<likeVideos.size();i++){
+                    if(likeVideos.get(i).getNameVideo().equals(video.getNameVideo())){
+                        likeVideoService.delete(likeVideos.get(i).getId());
                         video.setLikeVideo(video.getLikeVideo()-1);
                         videoService.save(video);
                         return new ResponseEntity<>(video, HttpStatus.OK);
                     }
                 }
             }
-            LikeSong likeSong = new LikeSong();
-            likeSong.setNameVideo(video.getNameVideo());
-            likeSong.setUsername(user.getUsername());
-            likeSongService.save(likeSong);
+            LikeVideo likeVideo = new LikeVideo();
+            likeVideo.setNameVideo(video.getNameVideo());
+            likeVideo.setUsername(user.getUsername());
+            likeVideoService.save(likeVideo);
             video.setLikeVideo(video.getLikeVideo()+ 1);
             videoService.save(video);
             return new ResponseEntity<>(video, HttpStatus.OK);
