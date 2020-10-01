@@ -139,4 +139,15 @@ public class VideoAPI {
             return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/count-view-video/{id}")
+    public ResponseEntity<?> getSongListenById(@PathVariable("id") Long id){
+        try {
+            Video video = videoService.findById(id).orElseThrow(EntityNotFoundException::new);
+            video.setViewVideo(video.getViewVideo()+1);
+            videoService.save(video);
+            return new ResponseEntity<>(video,HttpStatus.OK);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
 }
