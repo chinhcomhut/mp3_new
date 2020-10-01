@@ -103,7 +103,7 @@ public class VideoAPI {
         return new ResponseEntity<>(new ResponseMessage("yes"),HttpStatus.OK);
     }
     @GetMapping("/video-like-up/{id}")
-    public ResponseEntity<?> getVideoLikedById(@PathVariable Long id) {
+    public ResponseEntity<?> getVideoLikedById(@PathVariable("id") Long id) {
         try {
 
             Video video = videoService.findById(id).orElseThrow(EntityNotFoundException::new);
