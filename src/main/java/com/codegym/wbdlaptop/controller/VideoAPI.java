@@ -103,7 +103,7 @@ public class VideoAPI {
         return new ResponseEntity<>(new ResponseMessage("yes"),HttpStatus.OK);
     }
     @GetMapping("/video-like-up/{id}")
-    public ResponseEntity<?> getSongLikedById(@PathVariable Long id) {
+    public ResponseEntity<?> getVideoLikedById(@PathVariable Long id) {
         try {
 
             Video video = videoService.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -111,7 +111,7 @@ public class VideoAPI {
             List<LikeSong> likeSongs = likeSongService.findByUsernameContaining(user.getUsername());
             if(likeSongs.size()==0){
                 LikeSong likeSong = new LikeSong();
-                likeSong.setNameSong(video.getNameVideo());
+                likeSong.setNameVideo(video.getNameVideo());
                 likeSong.setUsername(user.getUsername());
                 likeSongService.save(likeSong);
                 video.setLikeVideo(video.getLikeVideo()+ 1);
@@ -128,7 +128,7 @@ public class VideoAPI {
                 }
             }
             LikeSong likeSong = new LikeSong();
-            likeSong.setNameSong(video.getNameVideo());
+            likeSong.setNameVideo(video.getNameVideo());
             likeSong.setUsername(user.getUsername());
             likeSongService.save(likeSong);
             video.setLikeVideo(video.getLikeVideo()+ 1);
