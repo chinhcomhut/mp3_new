@@ -143,7 +143,7 @@ public class VideoAPI {
     public ResponseEntity<?> getSongListenById(@PathVariable("id") Long id){
         try {
             Video video = videoService.findById(id).orElseThrow(EntityNotFoundException::new);
-            video.setViewVideo(video.getViewVideo()+0.5);
+            video.setViewVideo(video.getViewVideo()+0.25);
             videoService.save(video);
             return new ResponseEntity<>(video,HttpStatus.OK);
         } catch (EntityNotFoundException e){
