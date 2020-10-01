@@ -15,14 +15,14 @@ public class Video {
     private String nameBand;
     private String createBy;
     private int likeVideo;
-    private int viewVideo;
+    private double viewVideo;
     @ManyToOne
     User user;
 
     public Video() {
     }
 
-    public Video(Long id, String nameVideo, String linkYoutube, String nameSinger, String nameCategory, String nameBand, String createBy, int likeVideo, int viewVideo, User user) {
+    public Video(Long id, String nameVideo, String linkYoutube, String nameSinger, String nameCategory, String nameBand, String createBy, int likeVideo, double viewVideo, User user) {
         this.id = id;
         this.nameVideo = nameVideo;
         this.linkYoutube = linkYoutube;
@@ -99,11 +99,11 @@ public class Video {
         this.likeVideo = likeVideo;
     }
 
-    public int getViewVideo() {
+    public double getViewVideo() {
         return viewVideo;
     }
 
-    public void setViewVideo(int viewVideo) {
+    public void setViewVideo(double viewVideo) {
         this.viewVideo = viewVideo;
     }
 
