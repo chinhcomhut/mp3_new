@@ -1,9 +1,9 @@
 package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
-import com.codegym.wbdlaptop.model.Singer;
-import com.codegym.wbdlaptop.model.Song;
-import com.codegym.wbdlaptop.model.Video;
+import com.codegym.wbdlaptop.model.*;
+import com.codegym.wbdlaptop.security.service.UserDetailsServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.LikeSongServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.VideoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +26,10 @@ import java.util.Optional;
 public class VideoAPI {
     @Autowired
     private VideoServiceImpl videoService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private LikeSongServiceImpl likeSongService;
     @GetMapping("/video")
     public ResponseEntity<?> pageVideo(@PageableDefault(sort = "nameVideo",direction = Sort.Direction.ASC)Pageable pageable){
         Page<Video> videos = videoService.findAll(pageable);
@@ -96,5 +101,41 @@ public class VideoAPI {
         }
         videoService.delete(id);
         return new ResponseEntity<>(new ResponseMessage("yes"),HttpStatus.OK);
+    }
+    @GetMapping("/video-like-up/{id}")
+    public ResponseEntity<?> getSongLikedById(@PathVariable Long id) {
+        try {
+
+            Video video = videoService.findById(id).orElseThrow(EntityNotFoundException::new);
+            User user = userDetailsService.getCurrentUser();
+            List<LikeSong> likeSongs = likeSongService.findByUsernameContaining(user.getUsername());
+            if(likeSongs.size()==0){
+                LikeSong likeSong = new LikeSong();
+                likeSong.setNameSong(video.getNameVideo());
+                likeSong.setUsername(user.getUsername());
+                likeSongService.save(likeSong);
+                video.setLikeVideo(video.getLikeVideo()+ 1);
+                videoService.save(video);
+                return new ResponseEntity<>(video, HttpStatus.OK);
+            } else {
+                for(int i = 0; i<likeSongs.size();i++){
+                    if(likeSongs.get(i).getNameVideo().equals(video.getNameVideo())){
+                        likeSongService.delete(likeSongs.get(i).getId());
+                        video.setLikeVideo(video.getLikeVideo()-1);
+                        videoService.save(video);
+                        return new ResponseEntity<>(video, HttpStatus.OK);
+                    }
+                }
+            }
+            LikeSong likeSong = new LikeSong();
+            likeSong.setNameSong(video.getNameVideo());
+            likeSong.setUsername(user.getUsername());
+            likeSongService.save(likeSong);
+            video.setLikeVideo(video.getLikeVideo()+ 1);
+            videoService.save(video);
+            return new ResponseEntity<>(video, HttpStatus.OK);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
+        }
     }
 }

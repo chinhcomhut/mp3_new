@@ -11,6 +11,7 @@ public class LikeSong {
     private Long id;
     private String nameSong;
     private String username;
+    private String nameVideo;
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(name = "likesong_user",
 //            joinColumns = @JoinColumn(name = "likesong_id"),
@@ -21,10 +22,19 @@ public class LikeSong {
     public LikeSong() {
     }
 
-    public LikeSong(Long id, String nameSong, String username) {
+    public LikeSong(Long id, String nameSong, String username, String nameVideo) {
         this.id = id;
         this.nameSong = nameSong;
         this.username = username;
+        this.nameVideo = nameVideo;
+    }
+
+    public String getNameVideo() {
+        return nameVideo;
+    }
+
+    public void setNameVideo(String nameVideo) {
+        this.nameVideo = nameVideo;
     }
 
     public Long getId() {
