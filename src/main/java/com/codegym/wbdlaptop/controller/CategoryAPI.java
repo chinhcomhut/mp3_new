@@ -1,14 +1,8 @@
 package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
-import com.codegym.wbdlaptop.model.Category;
-import com.codegym.wbdlaptop.model.Playlist;
-import com.codegym.wbdlaptop.model.Song;
-import com.codegym.wbdlaptop.model.User;
-import com.codegym.wbdlaptop.service.Impl.CategoryServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.PlayListServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.UserServiceImpl;
+import com.codegym.wbdlaptop.model.*;
+import com.codegym.wbdlaptop.service.Impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +29,8 @@ public class CategoryAPI {
     private PlayListServiceImpl playListService;
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private VideoServiceImpl videoService;
     @PostMapping("/category")
     public ResponseEntity<?> createCategory(@Valid @RequestBody Category category){
         if(category.getNameCategory()==null||category.getNameCategory()==""){
@@ -110,6 +106,18 @@ public class CategoryAPI {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songPage, HttpStatus.OK);
+    }
+    @GetMapping("/video-by-category/{id}")
+    public ResponseEntity<?> pageVideoByCategory(@PathVariable Long id, @PageableDefault(sort = "nameVideo",direction = Sort.Direction.ASC)Pageable pageable){
+        Optional<Category> category = categoryService.findById(id);
+        if(!category.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Page<Video> videos = videoService.findByNameCategoryContaining(category.get().getNameCategory(),pageable);
+        if(videos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(videos, HttpStatus.OK);
     }
     @GetMapping("/playlist-by-category/{id}")
     public ResponseEntity<?> pagePlayListByCategory(@PathVariable Long id, @PageableDefault(sort = "namePlayList", direction = Sort.Direction.ASC)Pageable pageable){
