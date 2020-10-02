@@ -1,14 +1,8 @@
 package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
-import com.codegym.wbdlaptop.model.Playlist;
-import com.codegym.wbdlaptop.model.Singer;
-import com.codegym.wbdlaptop.model.Song;
-import com.codegym.wbdlaptop.model.User;
-import com.codegym.wbdlaptop.service.Impl.PlayListServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.SingerServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.UserServiceImpl;
+import com.codegym.wbdlaptop.model.*;
+import com.codegym.wbdlaptop.service.Impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +28,8 @@ public class SingerAPI {
     private PlayListServiceImpl playListService;
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private VideoServiceImpl videoService;
     @PostMapping("/singer")
     public ResponseEntity<?> createSinger(@Valid @RequestBody Singer singer){
         if(singer.getNameSinger()==null||singer.getNameSinger()==""){
@@ -121,6 +117,18 @@ public class SingerAPI {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songPage, HttpStatus.OK);
+    }
+    @GetMapping("/video-by-singer/{id}")
+    public ResponseEntity<?> pageVideoBySinger(@PathVariable Long id, @PageableDefault(sort = "nameVideo", direction = Sort.Direction.ASC)Pageable pageable){
+        Optional<Singer> singer = singerService.findById(id);
+        if(!singer.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Page<Video> videoPage = videoService.findByNameSingerContaining(singer.get().getNameSinger(),pageable);
+        if(videoPage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(videoPage,HttpStatus.OK);
     }
     @GetMapping("/playlist-by-singer/{id}")
     public ResponseEntity<?> pagePlayListBySinger(@PathVariable Long id, @PageableDefault(sort = "namePlayList", direction = Sort.Direction.ASC)Pageable pageable){

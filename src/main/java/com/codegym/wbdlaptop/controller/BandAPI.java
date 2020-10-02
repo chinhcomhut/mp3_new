@@ -1,14 +1,8 @@
 package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
-import com.codegym.wbdlaptop.model.Band;
-import com.codegym.wbdlaptop.model.Playlist;
-import com.codegym.wbdlaptop.model.Song;
-import com.codegym.wbdlaptop.model.User;
-import com.codegym.wbdlaptop.service.Impl.BandServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.PlayListServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
-import com.codegym.wbdlaptop.service.Impl.UserServiceImpl;
+import com.codegym.wbdlaptop.model.*;
+import com.codegym.wbdlaptop.service.Impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +29,8 @@ public class BandAPI {
     private SongServiceImpl songService;
     @Autowired
     private PlayListServiceImpl playListService;
+    @Autowired
+    private VideoServiceImpl videoService;
     @PostMapping("/band")
     public ResponseEntity<?> createBand(@Valid @RequestBody Band band){
         if(band.getNameBand()==null||band.getNameBand()==""){
@@ -126,6 +122,18 @@ public class BandAPI {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(playlistPage, HttpStatus.OK);
+    }
+    @GetMapping("/video-by-band/{id}")
+    public ResponseEntity<?> pageVideoByBand(@PathVariable Long id, @PageableDefault(sort = "nameVideo", direction = Sort.Direction.ASC)Pageable pageable){
+        Optional<Band> band = bandService.findById(id);
+        if(!band.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Page<Video> videos = videoService.findByNameBandContaining(band.get().getNameBand(),pageable);
+        if(videos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(videos,HttpStatus.OK);
     }
     @GetMapping("list-band")
     public ResponseEntity<?> listBand(){
