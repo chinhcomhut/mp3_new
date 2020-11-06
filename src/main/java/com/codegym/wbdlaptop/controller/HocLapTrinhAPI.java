@@ -65,7 +65,7 @@ public class HocLapTrinhAPI {
         return new ResponseEntity<>(new ResponseMessage("nolink"), HttpStatus.OK);
     }
     hocLapTrinh1.get().setNameVideo(hocLapTrinh.getNameVideo());
-    hocLapTrinh1.get().setLinkYoutube(hocLapTrinh.getNameVideo());
+    hocLapTrinh1.get().setLinkYoutube(hocLapTrinh.getLinkYoutube());
     hocLapTrinhService.save(hocLapTrinh1.get());
     return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
