@@ -130,16 +130,26 @@ public class SongAPI {
             Song song = songService.findById(id).orElseThrow(EntityNotFoundException::new);
             User user = userDetailsService.getCurrentUser();
             List<LikeSong> likeSongs = likeSongService.findByUsernameContaining(user.getUsername());
-            if(likeSongs.size()==0){
-                LikeSong likeSong = new LikeSong();
-                likeSong.setNameSong(song.getNameSong());
-                likeSong.setUsername(user.getUsername());
-                likeSongService.save(likeSong);
-                song.setLikeSong(song.getLikeSong()+ 1);
-                songService.save(song);
-                return new ResponseEntity<>(song, HttpStatus.OK);
-            } else {
-                for(int i = 0; i<likeSongs.size();i++){
+//            if(likeSongs.size()==0){
+//                LikeSong likeSong = new LikeSong();
+//                likeSong.setNameSong(song.getNameSong());
+//                likeSong.setUsername(user.getUsername());
+//                likeSongService.save(likeSong);
+//                song.setLikeSong(song.getLikeSong()+ 1);
+//                songService.save(song);
+//                return new ResponseEntity<>(song, HttpStatus.OK);
+//            } else {
+//                for(int i = 0; i<likeSongs.size();i++){
+//                    if(likeSongs.get(i).getNameSong().equals(song.getNameSong())){
+//                        likeSongService.delete(likeSongs.get(i).getId());
+//                        song.setLikeSong(song.getLikeSong()-1);
+//                        songService.save(song);
+//                        return new ResponseEntity<>(song, HttpStatus.OK);
+//                    }
+//                }
+//            }
+            if(likeSongs.size()!=0){
+                for(int i =0; i<likeSongs.size();i++){
                     if(likeSongs.get(i).getNameSong().equals(song.getNameSong())){
                         likeSongService.delete(likeSongs.get(i).getId());
                         song.setLikeSong(song.getLikeSong()-1);
