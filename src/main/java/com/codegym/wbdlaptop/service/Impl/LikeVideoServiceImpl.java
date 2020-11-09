@@ -19,7 +19,7 @@ public class LikeVideoServiceImpl implements ILikeVideoService {
 
     @Override
     public void delete(Long id) {
-likeVideoRepository.deleteById(id);
+    likeVideoRepository.deleteById(id);
     }
 
     @Override

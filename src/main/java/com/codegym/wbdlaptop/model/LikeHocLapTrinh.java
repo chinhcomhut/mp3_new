@@ -3,17 +3,18 @@ package com.codegym.wbdlaptop.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "likevideo")
-public class LikeVideo {
+@Table(name = "likehlt")
+public class LikeHocLapTrinh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String nameVideo;
-    public LikeVideo() {
+
+    public LikeHocLapTrinh() {
     }
 
-    public LikeVideo(Long id, String username, String nameVideo) {
+    public LikeHocLapTrinh(Long id, String username, String nameVideo) {
         this.id = id;
         this.username = username;
         this.nameVideo = nameVideo;

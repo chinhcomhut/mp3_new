@@ -1,8 +1,10 @@
 package com.codegym.wbdlaptop.controller;
 
 import com.codegym.wbdlaptop.message.response.ResponseMessage;
-import com.codegym.wbdlaptop.model.HocLapTrinh;
+import com.codegym.wbdlaptop.model.*;
+import com.codegym.wbdlaptop.security.service.UserDetailsServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.HocLapTrinhServiceImpl;
+import com.codegym.wbdlaptop.service.Impl.LikeHocLapTrinhServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.swing.text.html.Option;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,6 +26,10 @@ import java.util.Optional;
 public class HocLapTrinhAPI {
     @Autowired
     private HocLapTrinhServiceImpl hocLapTrinhService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private LikeHocLapTrinhServiceImpl likeHocLapTrinhService;
     @GetMapping("/hoc-lap-trinh")
     public ResponseEntity<?> pageHocLapTrinh(@PageableDefault(sort = "nameVideo", direction = Sort.Direction.ASC)Pageable pageable){
         Page<HocLapTrinh> lapTrinhPage = hocLapTrinhService.findAll(pageable);
@@ -77,5 +85,51 @@ public class HocLapTrinhAPI {
         }
         hocLapTrinhService.delete(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+    @GetMapping("/hlt-like-up/{id}")
+    public ResponseEntity<?> getSongLikedById(@PathVariable Long id) {
+        try {
+
+            HocLapTrinh hocLapTrinh = hocLapTrinhService.findById(id).orElseThrow(EntityNotFoundException::new);
+            User user = userDetailsService.getCurrentUser();
+            List<LikeHocLapTrinh> likeHocLapTrinhs = likeHocLapTrinhService.findByUsernameContaining(user.getUsername());
+//            if(likeSongs.size()==0){
+//                LikeSong likeSong = new LikeSong();
+//                likeSong.setNameSong(song.getNameSong());
+//                likeSong.setUsername(user.getUsername());
+//                likeSongService.save(likeSong);
+//                song.setLikeSong(song.getLikeSong()+ 1);
+//                songService.save(song);
+//                return new ResponseEntity<>(song, HttpStatus.OK);
+//            } else {
+//                for(int i = 0; i<likeSongs.size();i++){
+//                    if(likeSongs.get(i).getNameSong().equals(song.getNameSong())){
+//                        likeSongService.delete(likeSongs.get(i).getId());
+//                        song.setLikeSong(song.getLikeSong()-1);
+//                        songService.save(song);
+//                        return new ResponseEntity<>(song, HttpStatus.OK);
+//                    }
+//                }
+//            }
+            if(likeHocLapTrinhs.size()!=0){
+                for(int i =0; i<likeHocLapTrinhs.size();i++){
+                    if(likeHocLapTrinhs.get(i).getNameVideo().equals(hocLapTrinh.getNameVideo())){
+                        likeHocLapTrinhService.delete(likeHocLapTrinhs.get(i).getId());
+                        hocLapTrinh.setLikeVideo(hocLapTrinh.getLikeVideo()-1);
+                        hocLapTrinhService.save(hocLapTrinh);
+                        return new ResponseEntity<>(hocLapTrinh, HttpStatus.OK);
+                    }
+                }
+            }
+            LikeHocLapTrinh likeHocLapTrinh = new LikeHocLapTrinh();
+            likeHocLapTrinh.setNameVideo(hocLapTrinh.getNameVideo());
+            likeHocLapTrinh.setUsername(user.getUsername());
+            likeHocLapTrinhService.save(likeHocLapTrinh);
+            hocLapTrinh.setLikeVideo(hocLapTrinh.getLikeVideo()+ 1);
+            hocLapTrinhService.save(hocLapTrinh);
+            return new ResponseEntity<>(hocLapTrinh, HttpStatus.OK);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
+        }
     }
 }
