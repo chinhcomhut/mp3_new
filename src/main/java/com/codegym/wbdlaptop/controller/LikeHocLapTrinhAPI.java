@@ -22,7 +22,7 @@ public class LikeHocLapTrinhAPI {
     UserDetailsServiceImpl userDetailsService;
     @Autowired
     LikeHocLapTrinhServiceImpl likeHocLapTrinhService;
-    @GetMapping("/hlt-by-user/")
+    @GetMapping("/hlt-by-user")
     public ResponseEntity<?> getListLikeHLT(){
         User user = userDetailsService.getCurrentUser();
         List<LikeHocLapTrinh> likeHocLapTrinhs = likeHocLapTrinhService.findByUsernameContaining(user.getUsername());
