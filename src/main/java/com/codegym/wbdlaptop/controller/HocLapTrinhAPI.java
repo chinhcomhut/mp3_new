@@ -136,7 +136,7 @@ public class HocLapTrinhAPI {
     public ResponseEntity<?> getViewById(@PathVariable("id") Long id){
         try {
             HocLapTrinh hocLapTrinh = hocLapTrinhService.findById(id).orElseThrow(EntityNotFoundException::new);
-            hocLapTrinh.setViewVideo(hocLapTrinh.getViewVideo()+0.25);
+            hocLapTrinh.setViewVideo(hocLapTrinh.getViewVideo()+0.5);
             hocLapTrinhService.save(hocLapTrinh);
             return new ResponseEntity<>(hocLapTrinh,HttpStatus.OK);
         } catch (EntityNotFoundException e){
