@@ -132,4 +132,15 @@ public class HocLapTrinhAPI {
             return new ResponseEntity<>(new ResponseMessage(e.getMessage()),HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/count-view-video-hlt/{id}")
+    public ResponseEntity<?> getViewById(@PathVariable("id") Long id){
+        try {
+            HocLapTrinh hocLapTrinh = hocLapTrinhService.findById(id).orElseThrow(EntityNotFoundException::new);
+            hocLapTrinh.setViewVideo(hocLapTrinh.getViewVideo()+0.5);
+            hocLapTrinhService.save(hocLapTrinh);
+            return new ResponseEntity<>(hocLapTrinh,HttpStatus.OK);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
 }

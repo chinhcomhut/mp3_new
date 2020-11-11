@@ -11,14 +11,14 @@ public class HocLapTrinh {
     private String nameVideo;
     private String linkYoutube;
     private int likeVideo;
-    private int viewVideo;
+    private double viewVideo;
     @ManyToOne
     User user;
 
     public HocLapTrinh() {
     }
 
-    public HocLapTrinh(Long id, String nameVideo, int likeVideo, int viewVideo, User user, String linkYoutube) {
+    public HocLapTrinh(Long id, String nameVideo, int likeVideo, double viewVideo, User user, String linkYoutube) {
         this.id = id;
         this.nameVideo = nameVideo;
         this.likeVideo = likeVideo;
@@ -59,11 +59,11 @@ public class HocLapTrinh {
         this.likeVideo = likeVideo;
     }
 
-    public int getViewVideo() {
+    public double getViewVideo() {
         return viewVideo;
     }
 
-    public void setViewVideo(int viewVideo) {
+    public void setViewVideo(double viewVideo) {
         this.viewVideo = viewVideo;
     }
 
